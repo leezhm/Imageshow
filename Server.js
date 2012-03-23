@@ -34,6 +34,9 @@ function start(route){
 	function onRequest(request, response){
 		console.log("A new remote request received ... ");
 
+		// get url pathname
+		var pathname = url.parse(request.url).pathname;
+
 		// show route messages
 		route(pathname);
 
