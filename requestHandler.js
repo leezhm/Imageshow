@@ -10,6 +10,19 @@
 
 function start(){
   console.log("Request handler 'start' was called ... ");
+
+  // sleep
+  function sleep(milliSecond){
+    var startTime = new Date().getTime();
+    console.log(startTime.toString() + " Begin to waiting ...");
+    while (new Date().getTime() < startTime + milliSecond){
+      console.log("Now is " + new Date().getTime().toString() +  " Just waiting ... ");
+    }
+  }
+
+  // let start function wait 10 second.
+  sleep(10000);
+
   return "Hello Start ... ";
 }
 
