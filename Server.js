@@ -30,24 +30,30 @@ var http = require("http");
 // load the url module
 var url = require("url");
 
-function start(route){
-	function onRequest(request, response){
-		console.log("A new remote request received ... ");
+function start(route, handle){
+  function onRequest(request, response){
+    console.log("A new remote request received ... ");
 
-		// get url pathname
-		var pathname = url.parse(request.url).pathname;
+    // get url pathname
+    var pathname = url.parse(request.url).pathname;
+    console.log("Request for " + pathname + " received ... ");
 
-		// show route messages
-		route(pathname);
+    //
+    pathname = pathname.replace(/\//g, "");
 
-		response.writeHead(200, {"Content-Type": "text/plain"});
-		response.write("Hello, Welcome to visit our sample website ... ");
-		response.end();
-	}
+    // write head
+    response.writeHead(200, {"Content-Type": "text/plain"});
 
-	// create server and start server
-	http.createServer(onRequest).listen(8068);
-	console.log("Server has started ... ");
+    //
+    var content = route(handle, pathname);
+    response.write(content);
+
+    response.end();
+  }
+
+  // create server and start server
+  http.createServer(onRequest).listen(8068);
+  console.log("Server has started ... ");
 }
 
 // export function start
