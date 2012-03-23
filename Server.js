@@ -8,7 +8,7 @@
 //
 // Copyright (c) leezhm(c)126.com. All Right Reserved.
 //
-// Last modified by leezhm(c)126.com on 22nd March, 2012.
+// Last modified by leezhm(c)126.com on 23rd March, 2012.
 //
 
 // load the http module
@@ -24,6 +24,7 @@ http.createServer(function(request, response){
 console.log('Server running at http://localhost:8068/');
 */
 
+
 // load the http module
 var http = require("http");
 
@@ -38,7 +39,7 @@ function start(route, handle){
     var pathname = url.parse(request.url).pathname;
     console.log("Request for " + pathname + " received ... ");
 
-    //
+    // remove '/' from current string pathname
     pathname = pathname.replace(/\//g, "");
 
     // write head
