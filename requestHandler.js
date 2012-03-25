@@ -5,26 +5,32 @@
 //
 // Copyright (c) leezhm(c)126.com. All Right Reserved.
 //
-// Last modified by leezhm(c)126.com on 23rd March, 2012.
+// Last modified by leezhm(c)126.com on 25th March, 2012.
 //
 
 var exec = require("child_process").exec;
 
-function start(){
+function start(response){
   console.log("Request handler 'start' was called ... ");
 
   var content = "empty";
 
-  exec("ls-lah", function(error, stdout, stderr){
-    content = stdout;
+  exec("find/",
+    {timeout : 10000, maxBuffer : 20000 * 1024},
+    function(error, stdout, stderr){
+    response.writeHead(200, {"Content-Type":"text/plain"});
+    response.write(stdout);
+    response.end();
   });
 
   return content;
 }
 
-function upload(){
+function upload(response){
   console.log("Request handler 'upload' was called ... ");
-  return "Hello upload";
+  response.writeHead(200, {"Content-Type": "text/plain"});
+  response.write("Hello, Uploading ... ");
+  response.end();
 }
 
 exports.start = start;

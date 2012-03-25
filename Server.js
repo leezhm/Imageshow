@@ -8,7 +8,7 @@
 //
 // Copyright (c) leezhm(c)126.com. All Right Reserved.
 //
-// Last modified by leezhm(c)126.com on 23rd March, 2012.
+// Last modified by leezhm(c)126.com on 25th March, 2012.
 //
 
 // load the http module
@@ -42,7 +42,7 @@ function start(route, handle){
     // remove '/' from current string pathname
     pathname = pathname.replace(/\//g, "");
 
-    // write head
+/*    // write head
     response.writeHead(200, {"Content-Type": "text/plain"});
 
     //
@@ -50,6 +50,9 @@ function start(route, handle){
     response.write(content);
 
     response.end();
+*/
+    // Use respone to return content
+    route(handle, pathname, response);
   }
 
   // create server and start server

@@ -5,19 +5,22 @@
 //
 // Copyright (c) leezhm(c)126.com. All Right Reserved.
 //
-// Last modified by leezhm(c)126.com on 23rd March, 2012.
+// Last modified by leezhm(c)126.com on 25th March, 2012.
 //
 
 
-function route(handle, pathname){
+function route(handle, pathname, response){
   console.log("About to route a request for " + pathname);
 
   if('function' == typeof handle[pathname]){
-    return handle[pathname]();
+    handle[pathname](response);
   }
   else{
     console.log("No request handler found for " + pathname);
-    return "404 Not Found";
+
+    response.writeHead(404, {"Content-Type": "text/plain"});
+    response.write("404 Not Found ... ");
+    response.end();
   }
 }
 
