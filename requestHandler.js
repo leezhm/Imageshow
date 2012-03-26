@@ -10,6 +10,7 @@
 
 var exec = require("child_process").exec;
 var querystring = require("querystring");
+var fs = require("fs");
 
 /*
 function start(response){
@@ -60,5 +61,23 @@ function upload(response, postData){
   response.end();
 }
 
+// Show a image
+function show(response, postData){
+  console.log("Request handler 'show' was called ... ");
+
+  fs.readFile("C:/Users/Lee/AppData/Local/Temp/test.png", "binary", function(error, file){
+    if(error){
+      response.writeHead(500, {"Content-Type": "text/plain"});
+      response.write(error + "\n");
+      response.end();
+    }else{
+      response.writeHead(200, {"Content-Type": "Image/png"});
+      response.write(file, "binary");
+      response.end();
+    }
+  });
+}
+
 exports.start = start;
 exports.upload = upload;
+exports.show = show;
