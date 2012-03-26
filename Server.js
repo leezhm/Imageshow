@@ -8,7 +8,7 @@
 //
 // Copyright (c) leezhm(c)126.com. All Right Reserved.
 //
-// Last modified by leezhm(c)126.com on 25th March, 2012.
+// Last modified by leezhm(c)126.com on 26th March, 2012.
 //
 
 // load the http module
@@ -55,7 +55,7 @@ function start(route, handle){
     // Use respone to return content
     route(handle, pathname, response);
 */
-
+/*
     var postData = "";
     request.setEncoding("utf-8");
 
@@ -69,6 +69,9 @@ function start(route, handle){
     request.addListener("end", function(){
       route(handle, pathname, response, postData);
     });
+*/
+    // for uploading image from our own machine
+    route(handle, pathname, response, request);
   }
 
   // create server and start server
