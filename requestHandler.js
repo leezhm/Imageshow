@@ -60,28 +60,34 @@ function upload(response, request){
 
   // using formidable
   var form = new formidable.IncomingForm();
+
+  // set
+  //form.uploadDir = "tmp";
   console.log("about to parse ... ");
   form.parse(request, function(error, fields, files){
     console.log("parsing done ... ");
 
+    var filename = fields['filename'];
+    console.log("filename = " + filename);
+
     try{
-      fs.renameSync(files.upload.path, "C:/Users/Lee/AppData/Local/Temp/test.png");
+      fs.renameSync(files.upload.path, "/tmp/test.png");
     }catch(e){
       console.log(e);
     }
 
     response.writeHead(200, {"Content-Type": "text/html"});
     response.write("received image:<br/>");
-    response.write("<img src='/show' />");
+    response.write("<img src='/show' />"); // send show request
     response.end();
   })
 }
 
 // Show a image
-function show(response, postData){
+function show(response){
   console.log("Request handler 'show' was called ... ");
 
-  fs.readFile("C:/Users/Lee/AppData/Local/Temp/test.png", "binary", function(error, file){
+  fs.readFile("/tmp/test.png", "binary", function(error, file){
     if(error){
       response.writeHead(500, {"Content-Type": "text/plain"});
       response.write(error + "\n");
