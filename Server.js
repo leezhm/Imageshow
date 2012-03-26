@@ -37,12 +37,12 @@ function start(route, handle){
 
     // get url pathname
     var pathname = url.parse(request.url).pathname;
-    console.log("Request for " + pathname + " received ... ");
-
     // remove '/' from current string pathname
     pathname = pathname.replace(/\//g, "");
+    console.log("Request for " + pathname + " received ... ");
 
-/*    // write head
+/*
+    // write head
     response.writeHead(200, {"Content-Type": "text/plain"});
 
     //
@@ -51,8 +51,24 @@ function start(route, handle){
 
     response.end();
 */
+/*
     // Use respone to return content
     route(handle, pathname, response);
+*/
+
+    var postData = "";
+    request.setEncoding("utf-8");
+
+    //
+    request.addListener("data", function(postDataChunk){
+      postData += postDataChunk;
+      Console.log("Received POST data Chunk '" + postDataChunk + "' ... ");
+    });
+
+    //
+    request.addListener("end", function(){
+      route(handle, pathname, response, postData);
+    });
   }
 
   // create server and start server
