@@ -5,7 +5,7 @@
 //
 // Copyright (c) leezhm(c)126.com. All Right Reserved.
 //
-// Last modified by leezhm(c)126.com on 26th March, 2012.
+// Last modified by leezhm(c)126.com on 27th March, 2012.
 //
 
 var exec = require("child_process").exec;
@@ -61,19 +61,34 @@ function upload(response, request){
   // using formidable
   var form = new formidable.IncomingForm();
 
-  // set
-  //form.uploadDir = "tmp";
+  // set form encoding as utf-8
+  form.encoding = "utf-8";
+
+  var path = process.cwd();
+  if("win32" == process.platform){
+    path += "\\tmp\\";
+  } else {
+    path += "/tmp/";
+  }
+
+  console.log("Current Work Directory -> " + process.cwd());
+  console.log("Current Operator System -> " + process.platform);
+  console.log("Current File Path -> " + path);
+
+  // set default upload folder
+  form.uploadDir = path;
+
   console.log("about to parse ... ");
   form.parse(request, function(error, fields, files){
     console.log("parsing done ... ");
 
-    var filename = fields['filename'];
+    var filename = files.upload.name;
     console.log("filename = " + filename);
 
     try{
-      fs.renameSync(files.upload.path, "/tmp/test.png");
+      fs.renameSync(files.upload.path, path + filename);
     }catch(e){
-      console.log(e);
+      console.log("Rename Exception --> " + e);
     }
 
     response.writeHead(200, {"Content-Type": "text/html"});
@@ -87,7 +102,7 @@ function upload(response, request){
 function show(response){
   console.log("Request handler 'show' was called ... ");
 
-  fs.readFile("/tmp/test.png", "binary", function(error, file){
+  fs.readFile("./tmp/test.png", "binary", function(error, file){
     if(error){
       response.writeHead(500, {"Content-Type": "text/plain"});
       response.write(error + "\n");
