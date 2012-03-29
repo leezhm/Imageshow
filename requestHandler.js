@@ -5,7 +5,7 @@
 //
 // Copyright (c) leezhm(c)126.com. All Right Reserved.
 //
-// Last modified by leezhm(c)126.com on 27th March, 2012.
+// Last modified by leezhm(c)126.com on 29th March, 2012.
 //
 
 var exec = require("child_process").exec;
@@ -93,22 +93,29 @@ function upload(response, request){
 
     response.writeHead(200, {"Content-Type": "text/html"});
     response.write("received image:<br/>");
-    response.write("<img src='/show' />"); // send show request
+
+    var link = '<img src=\'/show?filename=' + path + filename + '\'/>';
+
+    response.write(link); // send show request
     response.end();
   })
 }
 
 // Show a image
-function show(response){
+function show(response, request){
   console.log("Request handler 'show' was called ... ");
 
-  fs.readFile("./tmp/test.png", "binary", function(error, file){
+  var args = request.url.split("?");
+  var fields = String(args[1]).split("=");
+  console.log("Original -> " + fields[1]);
+
+  fs.readFile(fields[1], "binary", function(error, file){
     if(error){
       response.writeHead(500, {"Content-Type": "text/plain"});
       response.write(error + "\n");
       response.end();
     }else{
-      response.writeHead(200, {"Content-Type": "Image/png"});
+      response.writeHead(200, {"Content-Type": "Image/png,Image/jpeg"});
       response.write(file, "binary");
       response.end();
     }
